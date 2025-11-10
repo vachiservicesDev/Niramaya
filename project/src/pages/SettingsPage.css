@@ -1,0 +1,27 @@
+.settings-page {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.settings-section {
+  margin-bottom: calc(var(--spacing-unit) * 3);
+}
+
+.settings-section h3 {
+  margin-bottom: calc(var(--spacing-unit) * 3);
+}
+
+.form-help {
+  margin-top: var(--spacing-unit);
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+}
+
+.disclaimer-section {
+  margin-top: calc(var(--spacing-unit) * 4);
+}
+
+.disclaimer-section h4 {
+  color: #92400e;
+  margin-bottom: var(--spacing-unit);
+}
