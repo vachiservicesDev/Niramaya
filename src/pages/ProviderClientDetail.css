@@ -1,0 +1,119 @@
+.provider-client-detail {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.client-info {
+  margin-bottom: calc(var(--spacing-unit) * 4);
+}
+
+.info-row {
+  display: flex;
+  padding: calc(var(--spacing-unit) * 1.5) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  font-weight: 600;
+  width: 150px;
+  color: var(--color-text-secondary);
+}
+
+.timeline-section {
+  margin-bottom: calc(var(--spacing-unit) * 4);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: calc(var(--spacing-unit) * 3);
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing-unit) * 2);
+}
+
+.timeline-item {
+  transition: none;
+}
+
+.timeline-item:hover {
+  transform: none;
+}
+
+.timeline-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: calc(var(--spacing-unit) * 2);
+}
+
+.timeline-date {
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+.timeline-text {
+  color: var(--color-text);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  margin-bottom: calc(var(--spacing-unit) * 2);
+}
+
+.risk-indicator {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-unit);
+  padding-top: calc(var(--spacing-unit) * 2);
+  border-top: 1px solid var(--color-border);
+}
+
+.risk-label {
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.risk-value {
+  font-weight: 600;
+  padding: calc(var(--spacing-unit) / 2) var(--spacing-unit);
+  border-radius: 16px;
+}
+
+.risk-value.low {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.risk-value.medium {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.risk-value.high {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+@media (max-width: 768px) {
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-unit);
+  }
+
+  .info-row {
+    flex-direction: column;
+    gap: calc(var(--spacing-unit) / 2);
+  }
+
+  .info-label {
+    width: auto;
+  }
+}

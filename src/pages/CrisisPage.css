@@ -1,0 +1,134 @@
+.crisis-page {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.crisis-form {
+  margin: calc(var(--spacing-unit) * 3) 0;
+}
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit);
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-unit);
+  padding: calc(var(--spacing-unit) * 1.5);
+  border: 2px solid var(--color-border);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.radio-option:hover {
+  border-color: var(--color-primary);
+  background-color: var(--color-bg-secondary);
+}
+
+.radio-option input[type='radio'] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-unit);
+  cursor: pointer;
+}
+
+.checkbox-label input[type='checkbox'] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.response-section {
+  margin: calc(var(--spacing-unit) * 3) 0;
+}
+
+.suggestion-card {
+  background-color: #fef3c7;
+  border-left: 4px solid var(--color-warning);
+}
+
+.suggestion-card h3 {
+  color: #92400e;
+}
+
+.suggestion-card p,
+.suggestion-card ul {
+  color: #92400e;
+}
+
+.suggestion-card ul {
+  margin-left: calc(var(--spacing-unit) * 3);
+  margin-top: calc(var(--spacing-unit) * 2);
+}
+
+.suggestion-card li {
+  margin-bottom: var(--spacing-unit);
+}
+
+.hotlines-section {
+  margin-top: calc(var(--spacing-unit) * 4);
+}
+
+.hotlines-section h3 {
+  margin-bottom: calc(var(--spacing-unit) * 3);
+}
+
+.hotlines-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: calc(var(--spacing-unit) * 2);
+}
+
+.hotline-card {
+  border-left: 4px solid var(--color-primary);
+}
+
+.hotline-country {
+  display: inline-block;
+  padding: calc(var(--spacing-unit) / 2) var(--spacing-unit);
+  background-color: var(--color-bg-secondary);
+  border-radius: 16px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-unit);
+}
+
+.hotline-card h4 {
+  margin-bottom: var(--spacing-unit);
+}
+
+.hotline-phone {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-primary-dark);
+  margin: var(--spacing-unit) 0;
+}
+
+.hotline-link {
+  display: inline-block;
+  margin-top: var(--spacing-unit);
+  color: var(--color-primary-dark);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.hotline-link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .hotlines-list {
+    grid-template-columns: 1fr;
+  }
+}

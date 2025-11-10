@@ -1,0 +1,39 @@
+.community-list-page {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.subtitle {
+  color: var(--color-text-secondary);
+  margin-bottom: calc(var(--spacing-unit) * 4);
+  font-size: 1.1rem;
+}
+
+.communities-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: calc(var(--spacing-unit) * 3);
+}
+
+.community-card h3 {
+  margin-bottom: calc(var(--spacing-unit) * 1.5);
+}
+
+.community-description {
+  color: var(--color-text-secondary);
+  margin-bottom: calc(var(--spacing-unit) * 2);
+  line-height: 1.5;
+}
+
+.empty-state {
+  text-align: center;
+  color: var(--color-text-secondary);
+  padding: calc(var(--spacing-unit) * 4);
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 768px) {
+  .communities-grid {
+    grid-template-columns: 1fr;
+  }
+}
