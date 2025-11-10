@@ -78,6 +78,57 @@ npm run dev
 npm run build
 ```
 
+5. Run tests:
+```bash
+# Unit tests
+npm run test
+
+# E2E tests (requires dev server running)
+npm run test:e2e
+
+# Database health check
+npm run db:health
+```
+
+## Testing
+
+Comprehensive testing documentation is available:
+- **Unit Tests**: Vitest with React Testing Library
+- **E2E Tests**: Playwright for full user flow testing
+- **Manual Testing**: See [TESTING.md](./TESTING.md) for complete checklist
+
+Run tests:
+```bash
+npm run test          # Run unit tests
+npm run test:ui       # Run tests with UI
+npm run test:e2e      # Run E2E tests
+npm run db:health     # Check database health
+```
+
+## Deployment
+
+For production deployment to Vercel:
+
+1. See [DEPLOYMENT.md](./DEPLOYMENT.md) for complete deployment guide
+2. Review [PRODUCTION_CHECKLIST.md](./PRODUCTION_CHECKLIST.md) before deploying
+3. Set environment variables in Vercel:
+   - `VITE_SUPABASE_URL`
+   - `VITE_SUPABASE_ANON_KEY`
+
+Quick deploy:
+```bash
+npm run build          # Build for production
+# Deploy to Vercel via dashboard or CLI
+```
+
+## Documentation
+
+- **[DEPLOYMENT.md](./DEPLOYMENT.md)** - Complete deployment guide
+- **[TESTING.md](./TESTING.md)** - Comprehensive testing guide for all roles
+- **[PRODUCTION_CHECKLIST.md](./PRODUCTION_CHECKLIST.md)** - Pre-deployment checklist
+- **[QUICK_START.md](./QUICK_START.md)** - Quick start guide for users
+- **[TEST_ACCOUNTS.md](./TEST_ACCOUNTS.md)** - Test account information
+
 ## Key Features
 
 ### Anonymous Handle System
@@ -114,7 +165,8 @@ Users automatically receive a randomly generated anonymous handle on signup (e.g
 
 ```
 src/
-├── components/       # Reusable components (Layout)
+├── __tests__/       # Unit tests
+├── components/      # Reusable components (Layout)
 ├── contexts/        # React contexts (AuthContext)
 ├── lib/            # Utility libraries (Supabase client)
 ├── pages/          # Page components
@@ -129,10 +181,17 @@ src/
 │   ├── ProviderDashboard.tsx
 │   ├── ProviderClientDetail.tsx
 │   └── SettingsPage.tsx
+├── test/           # Test utilities and mocks
 └── index.css       # Global styles
 
 supabase/
 └── migrations/     # Database migrations
+
+tests/
+└── e2e/           # End-to-end tests (Playwright)
+
+scripts/
+└── db-health-check.js  # Database health check utility
 ```
 
 ## Design Principles
