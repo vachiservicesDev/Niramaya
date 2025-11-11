@@ -92,7 +92,19 @@ npm run db:health
 
 ## Testing
 
+### Hardcoded Test Credentials
+
+For instant testing without signup, use these credentials:
+- **User**: `testuser@example.com` / `Test123`
+- **Provider**: `testprovider@example.com` / `Test123`
+- **Admin**: `admin@example.com` / `Test123`
+
+See [HARDCODED_TEST_CREDENTIALS.md](./HARDCODED_TEST_CREDENTIALS.md) for complete details.
+
+### Test Documentation
+
 Comprehensive testing documentation is available:
+- **Hardcoded Test Credentials**: [HARDCODED_TEST_CREDENTIALS.md](./HARDCODED_TEST_CREDENTIALS.md) - Ready-to-use test accounts
 - **Unit Tests**: Vitest with React Testing Library
 - **E2E Tests**: Playwright for full user flow testing
 - **Manual Testing**: See [TESTING.md](./TESTING.md) for complete checklist
@@ -123,6 +135,7 @@ npm run build          # Build for production
 
 ## Documentation
 
+- **[HARDCODED_TEST_CREDENTIALS.md](./HARDCODED_TEST_CREDENTIALS.md)** - Ready-to-use test credentials for instant testing
 - **[DEPLOYMENT.md](./DEPLOYMENT.md)** - Complete deployment guide
 - **[TESTING.md](./TESTING.md)** - Comprehensive testing guide for all roles
 - **[PRODUCTION_CHECKLIST.md](./PRODUCTION_CHECKLIST.md)** - Pre-deployment checklist
