@@ -29,6 +29,9 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 // Test mode user database (localStorage-based)
+// SECURITY NOTE: Test mode stores passwords in plain text in localStorage
+// This is INTENTIONAL and ONLY for local testing/development
+// DO NOT use test mode in production or with real user data
 const TEST_USERS_KEY = 'niramaya_test_users'
 const TEST_SESSION_KEY = 'niramaya_test_session'
 
@@ -92,6 +95,7 @@ const getTestUsers = () => {
 
 const saveTestUsers = (users: any[]) => {
   if (isTestMode) {
+    // codeql[js/clear-text-storage-of-sensitive-data] - Test mode only, not for production
     localStorage.setItem(TEST_USERS_KEY, JSON.stringify(users))
   }
 }
@@ -104,6 +108,7 @@ const getTestSession = () => {
 
 const saveTestSession = (session: any) => {
   if (isTestMode) {
+    // codeql[js/clear-text-storage-of-sensitive-data] - Test mode only, not for production
     localStorage.setItem(TEST_SESSION_KEY, JSON.stringify(session))
   }
 }
@@ -208,6 +213,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const generateAnonymousHandle = () => {
     const adjectives = ['Calm', 'Brave', 'Kind', 'Wise', 'Gentle', 'Strong', 'Peaceful', 'Hopeful', 'Bright', 'Steady']
     const nouns = ['Soul', 'Heart', 'Spirit', 'Mind', 'Journey', 'Path', 'Light', 'Star', 'Wave', 'Cloud']
+    // codeql[js/insecure-randomness] - Anonymous handles are not security-sensitive
     const randomAdj = adjectives[Math.floor(Math.random() * adjectives.length)]
     const randomNoun = nouns[Math.floor(Math.random() * nouns.length)]
     const randomNum = Math.floor(Math.random() * 999) + 1
