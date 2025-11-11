@@ -124,85 +124,87 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (profileError) throw profileError
   }
 
-  const signIn = async (email: string, password: string) => {
-    // Hardcoded test credentials for seamless testing
-    const testUsers = [
-      { email: 'testuser@example.com', password: 'Test123', name: 'Test User', role: 'User' as UserRole },
-      { email: 'testprovider@example.com', password: 'Test123', name: 'Test Provider', role: 'Provider' as UserRole },
-      { email: 'admin@example.com', password: 'Test123', name: 'Admin User', role: 'Admin' as UserRole },
-    ]
+const signIn = async (email: string, password: string) => {
+  const testUsers = [
+    { email: 'testuser@example.com', password: 'Test123', name: 'Test User', role: 'User' as UserRole },
+    { email: 'testprovider@example.com', password: 'Test123', name: 'Test Provider', role: 'Provider' as UserRole },
+    { email: 'admin@example.com', password: 'Test123', name: 'Admin User', role: 'Admin' as UserRole },
+  ]
 
-    // Check if this is a hardcoded test user
-    const testUser = testUsers.find(u => u.email === email && u.password === password)
-    
-    if (testUser) {
-      // For test users, try to sign in with Supabase Auth first
-      // If it fails, auto-create the account
-      try {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        })
-        
-        if (!error) {
-          // Successfully logged in
-          return
-        }
-      } catch (signInError) {
-        // Login failed, try to create the account
-      }
+  const testUser = testUsers.find(u => u.email === email && u.password === password)
 
-      // If we get here, the user doesn't exist in Supabase Auth
-      // Auto-create it for seamless testing
-      const { data, error: signUpError } = await supabase.auth.signUp({
-        email,
-        password,
-      })
-
-      if (signUpError) throw signUpError
-      if (!data.user) throw new Error('User creation failed')
-
-      // Create the user profile
-      const anonymousHandle = generateAnonymousHandle()
-
-      const { error: profileError } = await supabase
-        .from('users')
-        .insert([
-          {
-            id: data.user.id,
-            email,
-            name: testUser.name,
-            role: testUser.role,
-            anonymous_handle: anonymousHandle,
-            is_anonymous_handle: true,
-          },
-        ])
-
-      if (profileError) {
-        // Profile might already exist, try to update it
-        const { error: updateError } = await supabase
-          .from('users')
-          .update({
-            email,
-            name: testUser.name,
-            role: testUser.role,
-          })
-          .eq('id', data.user.id)
-        
-        if (updateError) throw updateError
-      }
-
+  if (testUser) {
+    // 1) Try sign-in first
+    const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({ email, password })
+    if (!signInError && signInData?.user) {
+      console.info('Test user signed in successfully.')
       return
     }
 
-    // For non-test users, use regular Supabase authentication
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    })
+    // Log the sign-in error for diagnostics
+    console.warn('Test user signIn failed (will attempt signUp):', signInError)
 
-    if (error) throw error
+    // 2) Attempt sign up (only if signups are allowed)
+    const { data: signUpData, error: signUpError } = await supabase.auth.signUp({ email, password })
+    if (signUpError) {
+      console.error('Test user signUp failed:', signUpError)
+      throw signUpError
+    }
+    if (!signUpData?.user) {
+      throw new Error('User creation failed after signUp call.')
+    }
+
+    // 3) Sign in after sign up to ensure session token is created
+    const { data: postSignInData, error: postSignInError } = await supabase.auth.signInWithPassword({ email, password })
+    if (postSignInError || !postSignInData?.user) {
+      console.error('Post-signup signIn failed:', postSignInError)
+      throw postSignInError ?? new Error('Post-signup signIn failed')
+    }
+
+    // 4) Create or update profile
+    const anonymousHandle = generateAnonymousHandle()
+    const { error: profileError } = await supabase
+      .from('users')
+      .insert([
+        {
+          id: signUpData.user.id,
+          email,
+          name: testUser.name,
+          role: testUser.role,
+          anonymous_handle: anonymousHandle,
+          is_anonymous_handle: true,
+        },
+      ])
+
+    if (profileError) {
+      // If insert fails because profile exists, try update
+      console.warn('Profile insert failed, attempting update:', profileError)
+      const { error: updateError } = await supabase
+        .from('users')
+        .update({
+          email,
+          name: testUser.name,
+          role: testUser.role,
+        })
+        .eq('id', signUpData.user.id)
+
+      if (updateError) {
+        console.error('Profile update failed:', updateError)
+        throw updateError
+      }
+    }
+
+    console.info('Test user auto-created and signed in.')
+    return
   }
+
+  // Non-test users: normal auth
+  const { error } = await supabase.auth.signInWithPassword({ email, password })
+  if (error) {
+    console.error('Regular signIn failed:', error)
+    throw error
+  }
+}
 
   const signOut = async () => {
     const { error } = await supabase.auth.signOut()
