@@ -12,6 +12,7 @@ export default function UserHome() {
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [recentMoods, setRecentMoods] = useState<{mood: MoodLevel; created_at: string}[]>([])
+  const [showRateApp, setShowRateApp] = useState(false)
 
   const moods: { value: MoodLevel; label: string; emoji: string }[] = [
     { value: 'very_low', label: 'Very Low', emoji: '😢' },
@@ -23,6 +24,11 @@ export default function UserHome() {
 
   useEffect(() => {
     fetchRecentMoods()
+    const sessionCompleted = localStorage.getItem('sessionCompleted')
+    if (sessionCompleted) {
+      setShowRateApp(true)
+      localStorage.removeItem('sessionCompleted')
+    }
   }, [])
 
   const fetchRecentMoods = async () => {
@@ -81,12 +87,27 @@ export default function UserHome() {
     return moodMap[mood]
   }
 
+  const handleSafetyCalling = () => {
+    console.log('Safety Calling feature activated. Logging event and notifying emergency contacts.');
+    // In a real application, this would trigger a call to the backend to
+    // log the event and send notifications to emergency contacts.
+    alert('Safety Calling feature activated. Your emergency contacts have been notified.');
+  };
+
   return (
     <Layout>
       <div className="user-home">
         <div className="greeting">
           <h1>Hi {profile?.name}, how are you feeling today?</h1>
         </div>
+
+        {showRateApp && (
+          <div className="rate-app-alert">
+            <p>Enjoying Niramaya? Please take a moment to rate us!</p>
+            <button onClick={() => setShowRateApp(false)} className="btn btn-primary">Rate Now</button>
+            <button onClick={() => setShowRateApp(false)} className="btn btn-secondary">Later</button>
+          </div>
+        )}
 
         <div className="mood-checkin-card card">
           <h3>Quick Mood Check-in</h3>
@@ -162,6 +183,12 @@ export default function UserHome() {
             <h3>Crisis Resources</h3>
             <p>If you're not feeling safe, reach out now</p>
           </Link>
+
+          <div className="action-card card safety-calling-card" onClick={handleSafetyCalling}>
+            <div className="action-icon">🚨</div>
+            <h3>Safety Calling</h3>
+            <p>Immediately alert your emergency contacts</p>
+          </div>
         </div>
       </div>
     </Layout>

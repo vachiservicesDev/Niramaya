@@ -12,6 +12,13 @@ import CommunityDetailPage from './pages/CommunityDetailPage'
 import ProviderDashboard from './pages/ProviderDashboard'
 import ProviderClientDetail from './pages/ProviderClientDetail'
 import SettingsPage from './pages/SettingsPage'
+import AdminDashboard from './pages/admin/AdminDashboard'
+import PlatformOverview from './pages/admin/PlatformOverview'
+import UserProviderManagement from './pages/admin/UserProviderManagement'
+import ContentServiceManagement from './pages/admin/ContentServiceManagement'
+import ComplianceSecurity from './pages/admin/ComplianceSecurity'
+import AnalyticsReporting from './pages/admin/AnalyticsReporting'
+import WorkflowAutomation from './pages/admin/WorkflowAutomation'
 
 function ProtectedRoute({ children, requiredRole }: { children: React.ReactNode; requiredRole?: string }) {
   const { user, profile, loading } = useAuth()
@@ -115,6 +122,22 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute requiredRole="Admin">
+            <AdminDashboard />
+          </ProtectedRoute>
+        }
+      >
+        <Route path="overview" element={<PlatformOverview />} />
+        <Route path="user-provider-management" element={<UserProviderManagement />} />
+        <Route path="content-service-management" element={<ContentServiceManagement />} />
+        <Route path="compliance-security" element={<ComplianceSecurity />} />
+        <Route path="analytics-reporting" element={<AnalyticsReporting />} />
+        <Route path="workflow-automation" element={<WorkflowAutomation />} />
+      </Route>
     </Routes>
   )
 }

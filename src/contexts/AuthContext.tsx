@@ -20,7 +20,20 @@ interface AuthContextType {
   session: Session | null
   profile: UserProfile | null
   loading: boolean
-  signUp: (email: string, password: string, name: string, role: UserRole) => Promise<void>
+  signUp: (
+    email: string,
+    password: string,
+    name: string,
+    role: UserRole,
+    onboardingData: {
+      emergencyContactName: string
+      emergencyContactPhone: string
+      permissions: {
+        dataProcessing: boolean
+        notifications: boolean
+      }
+    }
+  ) => Promise<void>
   signIn: (email: string, password: string) => Promise<void>
   signOut: () => Promise<void>
   refreshProfile: () => Promise<void>
@@ -97,7 +110,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return `${randomAdj}${randomNoun}${randomNum}`
   }
 
-  const signUp = async (email: string, password: string, name: string, role: UserRole) => {
+  const signUp = async (
+    email: string,
+    password: string,
+    name: string,
+    role: UserRole,
+    onboardingData: {
+      emergencyContactName: string
+      emergencyContactPhone: string
+      permissions: {
+        dataProcessing: boolean
+        notifications: boolean
+      }
+    }
+  ) => {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -118,6 +144,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           role,
           anonymous_handle: anonymousHandle,
           is_anonymous_handle: true,
+          emergency_contact_name: onboardingData.emergencyContactName,
+          emergency_contact_phone: onboardingData.emergencyContactPhone,
+          accepted_data_processing: onboardingData.permissions.dataProcessing,
+          accepted_notifications: onboardingData.permissions.notifications,
         },
       ])
 

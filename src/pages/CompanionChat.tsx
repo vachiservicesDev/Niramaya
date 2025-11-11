@@ -99,6 +99,15 @@ export default function CompanionChat() {
               Send
             </button>
           </div>
+          <button
+            className="btn btn-secondary"
+            onClick={() => {
+              localStorage.setItem('sessionCompleted', 'true');
+              alert('Session ended. You will be prompted to rate the app on the home page.');
+            }}
+          >
+            End Session
+          </button>
         </div>
       </div>
     </Layout>

@@ -105,6 +105,31 @@ export default function ProviderDashboard() {
           </div>
         )}
 
+        <div className="booking-management card">
+          <h3>Booking Management</h3>
+          <p>Automate confirmations, reminders, and rescheduling notifications.</p>
+        </div>
+
+        <div className="session-delivery card">
+          <h3>Session Delivery</h3>
+          <p>Allow real-time progress reporting and post-session summaries.</p>
+        </div>
+
+        <div className="progress-reporting card">
+          <h3>Progress & Reporting</h3>
+          <p>Submit session notes and flag critical events.</p>
+        </div>
+
+        <div className="communication card">
+          <h3>Communication</h3>
+          <p>Securely message clients and receive feedback.</p>
+        </div>
+
+        <div className="feedback card">
+          <h3>Possible feedbacks to user</h3>
+          <p>Provide feedback to users on their progress.</p>
+        </div>
+
         {loading ? (
           <p>Loading clients...</p>
         ) : clients.length === 0 ? (
