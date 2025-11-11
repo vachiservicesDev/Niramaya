@@ -134,6 +134,33 @@ export default function AuthPage() {
           </button>
         </form>
 
+        {isLogin && (
+          <div className="test-credentials-info" style={{ 
+            marginTop: '20px', 
+            padding: '15px', 
+            backgroundColor: '#f0f9ff', 
+            borderRadius: '8px',
+            border: '1px solid #bae6fd'
+          }}>
+            <p style={{ 
+              fontSize: '14px', 
+              color: '#0369a1', 
+              margin: '0 0 8px 0',
+              fontWeight: '600'
+            }}>
+              🧪 Test Credentials Available
+            </p>
+            <p style={{ 
+              fontSize: '12px', 
+              color: '#0c4a6e', 
+              margin: '0',
+              lineHeight: '1.5'
+            }}>
+              For testing: testuser@example.com / Test123 (User) • testprovider@example.com / Test123 (Provider) • admin@example.com / Test123 (Admin)
+            </p>
+          </div>
+        )}
+
         <div className="disclaimer">
           <p className="disclaimer-text">
             By continuing, you acknowledge that Niramaya is not a substitute for professional medical care.
