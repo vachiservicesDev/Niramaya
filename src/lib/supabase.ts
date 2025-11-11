@@ -3,11 +3,13 @@ import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables')
-}
+// Check if we're in test mode (no Supabase configured)
+export const isTestMode = !supabaseUrl || !supabaseAnonKey
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+// Create supabase client only if configured, otherwise use a mock
+export const supabase = isTestMode 
+  ? null as any // Will be handled by mock auth in AuthContext
+  : createClient(supabaseUrl, supabaseAnonKey)
 
 export type UserRole = 'User' | 'Provider' | 'Admin'
 export type MoodLevel = 'very_low' | 'low' | 'neutral' | 'high' | 'very_high'
