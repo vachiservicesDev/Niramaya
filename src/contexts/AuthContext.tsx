@@ -125,6 +125,77 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   const signIn = async (email: string, password: string) => {
+    // Hardcoded test credentials for seamless testing
+    const testUsers = [
+      { email: 'testuser@example.com', password: 'Test123', name: 'Test User', role: 'User' as UserRole },
+      { email: 'testprovider@example.com', password: 'Test123', name: 'Test Provider', role: 'Provider' as UserRole },
+      { email: 'admin@example.com', password: 'Test123', name: 'Admin User', role: 'Admin' as UserRole },
+    ]
+
+    // Check if this is a hardcoded test user
+    const testUser = testUsers.find(u => u.email === email && u.password === password)
+    
+    if (testUser) {
+      // For test users, try to sign in with Supabase Auth first
+      // If it fails, auto-create the account
+      try {
+        const { error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        })
+        
+        if (!error) {
+          // Successfully logged in
+          return
+        }
+      } catch (signInError) {
+        // Login failed, try to create the account
+      }
+
+      // If we get here, the user doesn't exist in Supabase Auth
+      // Auto-create it for seamless testing
+      const { data, error: signUpError } = await supabase.auth.signUp({
+        email,
+        password,
+      })
+
+      if (signUpError) throw signUpError
+      if (!data.user) throw new Error('User creation failed')
+
+      // Create the user profile
+      const anonymousHandle = generateAnonymousHandle()
+
+      const { error: profileError } = await supabase
+        .from('users')
+        .insert([
+          {
+            id: data.user.id,
+            email,
+            name: testUser.name,
+            role: testUser.role,
+            anonymous_handle: anonymousHandle,
+            is_anonymous_handle: true,
+          },
+        ])
+
+      if (profileError) {
+        // Profile might already exist, try to update it
+        const { error: updateError } = await supabase
+          .from('users')
+          .update({
+            email,
+            name: testUser.name,
+            role: testUser.role,
+          })
+          .eq('id', data.user.id)
+        
+        if (updateError) throw updateError
+      }
+
+      return
+    }
+
+    // For non-test users, use regular Supabase authentication
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
