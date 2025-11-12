@@ -39,9 +39,9 @@ export default function CommunityListPage() {
 
       if (membershipsError) throw membershipsError
 
-      const membershipIds = new Set(memberships?.map((m) => m.community_id) || [])
+      const membershipIds = new Set(memberships?.map((m: any) => m.community_id) || [])
 
-      const enrichedCommunities = (communitiesData || []).map((community) => ({
+      const enrichedCommunities = (communitiesData || []).map((community: any) => ({
         ...community,
         is_member: membershipIds.has(community.id),
       }))

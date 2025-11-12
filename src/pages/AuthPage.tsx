@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
-import { UserRole } from '../lib/supabase'
+import { UserRole, isTestMode } from '../lib/supabase'
 import './AuthPage.css'
 
 export default function AuthPage() {
@@ -45,6 +45,20 @@ export default function AuthPage() {
         <div className="auth-header">
           <h1>Niramaya</h1>
           <p>Your mental wellness companion</p>
+          {isTestMode && (
+            <div style={{
+              marginTop: '10px',
+              padding: '8px 12px',
+              backgroundColor: '#fef3c7',
+              border: '1px solid #fbbf24',
+              borderRadius: '6px',
+              fontSize: '13px',
+              color: '#92400e',
+              fontWeight: '500'
+            }}>
+              🧪 Test Mode - No Supabase Required
+            </div>
+          )}
         </div>
 
         <div className="auth-tabs">

@@ -33,7 +33,7 @@ export default function ProviderDashboard() {
         .eq('provider_id', profile?.id)
         .eq('status', 'active')
 
-      const clientIds = (links || []).map((link) => link.client_id)
+      const clientIds = (links || []).map((link: any) => link.client_id)
 
       if (clientIds.length > 0) {
         const { count: entriesCount } = await supabase
