@@ -26,8 +26,16 @@ export default function AuthPage() {
 
     try {
       if (isLogin) {
-        await signIn(email, password)
-        navigate('/app/home')
+        const profile = await signIn(email, password, role)
+        if (profile) {
+          if (profile.role === 'Provider') {
+            navigate('/app/provider/dashboard')
+          } else if (profile.role === 'Admin') {
+            navigate('/app/admin/dashboard')
+          } else {
+            navigate('/app/home')
+          }
+        }
       } else {
         await signUp(email, password, name, role)
         navigate('/app/home')
