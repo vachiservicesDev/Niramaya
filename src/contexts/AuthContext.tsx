@@ -285,6 +285,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (error) throw error
     if (!data.user) throw new Error('User creation failed')
 
+    // Manually set the session to ensure the subsequent insert is authenticated
+    if (data.session) {
+      await supabase.auth.setSession(data.session)
+    }
+
     const anonymousHandle = generateAnonymousHandle()
 
     const { error: profileError } = await supabase
