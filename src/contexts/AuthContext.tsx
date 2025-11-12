@@ -21,7 +21,7 @@ interface AuthContextType {
   profile: UserProfile | null
   loading: boolean
   signUp: (email: string, password: string, name: string, role: UserRole) => Promise<void>
-  signIn: (email: string, password: string) => Promise<void>
+  signIn: (email: string, password: string, role?: UserRole) => Promise<UserProfile | null>
   signOut: () => Promise<void>
   refreshProfile: () => Promise<void>
 }
@@ -303,7 +303,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (profileError) throw profileError
   }
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = async (email: string, password: string, role?: UserRole) => {
     // Test mode: authenticate against localStorage
     if (isTestMode) {
       const testUsers = getTestUsers()
@@ -337,7 +337,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(mockUser)
       setSession(mockSession as Session)
       setProfile(profileData)
-      return
+      return profileData
     }
 
     // Hardcoded test credentials for seamless testing
@@ -411,12 +411,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     // For non-test users, use regular Supabase authentication
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     })
 
     if (error) throw error
+    if (!data.user) return null
+
+    const profileData = await fetchProfile(data.user.id)
+    return profileData
   }
 
   const signOut = async () => {
